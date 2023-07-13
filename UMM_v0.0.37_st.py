@@ -30,10 +30,10 @@ class Ui_MainWindow(object): # здесь у нас основное окно, �
         self.verticalLayout.addLayout(self.inputLayout)
         self.treeWidget = QtWidgets.QTreeWidget(self.centralwidget)
         self.treeWidget.setObjectName("treeWidget")
-        self.treeWidget.headerItem().setText(0, "Имя файла")
-        self.treeWidget.headerItem().setText(1, "Размер")
-        self.treeWidget.headerItem().setText(2, "Папка")
-        self.treeWidget.headerItem().setText(3, "Путь")
+        self.treeWidget.headerItem().setText(0, "Name")
+        self.treeWidget.headerItem().setText(1, "Size")
+        self.treeWidget.headerItem().setText(2, "Folder")
+        self.treeWidget.headerItem().setText(3, "Path")
         self.verticalLayout.addWidget(self.treeWidget)
         self.statusLayout = QtWidgets.QVBoxLayout()
         self.statusLayout.setObjectName("statusLayout")
@@ -54,10 +54,10 @@ class Ui_MainWindow(object): # здесь у нас основное окно, �
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "Сканер дубликатов файлов"))
-        self.directoryLabel.setText(_translate("MainWindow", "Директория:"))
-        self.browseButton.setText(_translate("MainWindow", "Обзор"))
-        self.scanButton.setText(_translate("MainWindow", "Сканировать"))
+        MainWindow.setWindowTitle(_translate("MainWindow", "Universal Media Manger: pre-alfa"))
+        self.directoryLabel.setText(_translate("MainWindow", "Directory:"))
+        self.browseButton.setText(_translate("MainWindow", "Choose"))
+        self.scanButton.setText(_translate("MainWindow", "Scan"))
 
 class ScanThread(QThread): # здесь у нас сканирование, нужно будет вынести в отдельный файл
     update_progress = QtCore.pyqtSignal(int)
@@ -139,9 +139,9 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             if self.scan_thread is not None:
                 self.scan_thread.start()
     def update_current_directory(self, directory):
-        self.statusbar1.setText(f"Сканирование папки: {directory}") # Добавлено исправление
+        self.statusbar1.setText(f"Folder: {directory}") # Добавлено исправление
     def update_current_file(self, file):
-        self.statusbar2.setText(f"Сканирование файла: {file}") # Добавлено исправление
+        self.statusbar2.setText(f"File: {file}") # Добавлено исправление
     def update_progress(self, value):
         self.progressBar.setValue(value)
         # Строка удалена чтобы работал код - здесь было: QtCore.QCoreApplication.processEvents()
@@ -162,8 +162,8 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         total_files = sum(len(files) for files in file_sizes.values())
         duplicates_percentage = (duplicates / total_files) * 100
 
-        self.statusbar1.setText(f"Всего файлов: {total_files}, Количество дубликатов: {duplicates}")
-        self.statusbar2.setText(f"Размер дубликатов: {self.format_file_size(duplicates_size)}, Процент дубликатов: {duplicates_percentage:.2f}%")
+        self.statusbar1.setText(f"Total files: {total_files}, Duplicates: {duplicates}")
+        self.statusbar2.setText(f"Duplicates size: {self.format_file_size(duplicates_size)}, Duplicates percent: {duplicates_percentage:.2f}%")
 
         for size, files in file_sizes.items():
             if len(files) > 1:
